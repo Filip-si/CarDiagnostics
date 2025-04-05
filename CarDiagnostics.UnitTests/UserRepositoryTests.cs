@@ -3,11 +3,6 @@ using CarDiagnostics.API.src.Modules.User.Core.Exceptions;
 using CarDiagnostics.API.src.Modules.User.Data;
 using CarDiagnostics.API.src.Modules.User.Data.Entities;
 using CarDiagnostics.API.src.Modules.User.Data.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarDiagnostics.UnitTests;
 
