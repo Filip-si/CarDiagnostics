@@ -17,7 +17,7 @@ public class UserRepository : IUserRepository
 
     public void AddUser(UserRequest request)
     {
-        var userExists = _dbContext.Users.AsNoTracking().Any(u => u.Email.ToLower() == request.Email.ToLower());
+        var userExists = _dbContext.Users.AsNoTracking().Any(u => u.Email.ToLower().Trim() == request.Email.ToLower().Trim());
         if (userExists)
         {
             throw new EmailAlreadyUsedException();
@@ -67,9 +67,9 @@ public class UserRepository : IUserRepository
         var user = _dbContext.Users
             .FirstOrDefault(u => u.Id == request.Id) ?? throw new UserNotFoundException();
 
-        if (user.Email.ToLower() != request.Email.ToLower())
+        if (user.Email.ToLower().Trim() != request.Email.ToLower().Trim())
         {
-            var userExists = _dbContext.Users.AsNoTracking().Any(u => u.Email.ToLower() == request.Email.ToLower());
+            var userExists = _dbContext.Users.AsNoTracking().Any(u => u.Email.ToLower().Trim() == request.Email.ToLower().Trim());
             if (userExists)
             {
                 throw new EmailAlreadyUsedException();
@@ -78,7 +78,7 @@ public class UserRepository : IUserRepository
 
         user.FirstName = request.FirstName;
         user.LastName = request.LastName;
-        user.Email = request.Email;
+        user.Email = request.Email.ToLower().Trim();
 
         _dbContext.Users.Update(user);
         _dbContext.SaveChanges();

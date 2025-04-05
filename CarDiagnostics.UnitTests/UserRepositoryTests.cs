@@ -33,6 +33,7 @@ public class UserRepositoryTests
 
     [Test]
     [TestCase("John", "Test", "john.test@gmail.com")]
+    [TestCase("John", "Test", "  john.test@gmail.com")]
     public void Should_AddUserThrowException_WhenUserWithThisEmailAlreadyAdded(string firstName, string lastName, string email)
     {
         //Given
@@ -127,7 +128,8 @@ public class UserRepositoryTests
     }
 
     [Test]
-    [TestCase("John", "Test", "john.test@gmail.com")]
+    [TestCase("John", "Test", "john.updated@gmail.com")]
+    [TestCase("John", "Test", "   john.updated@gmail.com")]
     public void Should_UpdateUser_Successfully(string firstName, string lastName, string email)
     {
         //Given
@@ -135,15 +137,15 @@ public class UserRepositoryTests
         var repository = new UserRepository(dbContext);
 
         //When
-        dbContext.Users.Add(new UserEntity() { Email = email, FirstName = firstName, LastName = lastName });
+        dbContext.Users.Add(new UserEntity() { Email = "john.email@gmail.com", FirstName = "firstName", LastName = "lastName" });
         dbContext.SaveChanges();
         var id = dbContext.Users.First().Id;
-        repository.UpdateUser(new UpdateUserRequest(id, "updated", "updated", "john.updated@gmail.com"));
+        repository.UpdateUser(new UpdateUserRequest(id, firstName, lastName, email));
         var user = dbContext.Users.First();
 
         //Then
-        Assert.That(user.FirstName, Is.EqualTo("updated"));
-        Assert.That(user.LastName, Is.EqualTo("updated"));
+        Assert.That(user.FirstName, Is.EqualTo("John"));
+        Assert.That(user.LastName, Is.EqualTo("Test"));
         Assert.That(user.Email, Is.EqualTo("john.updated@gmail.com"));
     }
 
